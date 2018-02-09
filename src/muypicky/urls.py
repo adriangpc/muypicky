@@ -19,7 +19,7 @@ from restaurants.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', home),
-    url(r'^about/$', about),
-    url(r'^contact/$', contact),
+    url(r'^$', HomeView.as_view()),
+    url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
+    url(r'^contact/$', TemplateView.as_view(template_name = 'contact.html')),
 ]
