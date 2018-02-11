@@ -10,4 +10,4 @@ class RestaurantLocation(models.Model):
     updated     = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name + "-" + self.location
+        return self.name 

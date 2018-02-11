@@ -1,7 +1,8 @@
+from django.db.models import Q
 from random import randint
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
 from .models import RestaurantLocation
 
@@ -81,6 +82,44 @@ def restaurant_listview(request):
         "object_list": queryset
     }
     return render(request, template_name, context)
+
+class RestaurantListView(ListView):
+    #queryset = RestaurantLocation.objects.all()
+    template_name = 'restaurants/restaurant_list.html'
+
+    def get_queryset(self):
+        slug = self.kwargs.get("slug")
+        if slug:
+            queryset = RestaurantLocation.objects.filter(
+                Q(category__iexact=slug) |
+                Q(category__icontains=slug)
+                )
+        else:
+            queryset = RestaurantLocation.objects.all()
+        return queryset
+
+class JapaneseListView(ListView):
+    queryset = RestaurantLocation.objects.filter(category__iexact='japanese')
+    template_name = 'restaurants/restaurant_list.html'
+
+class AsianFusionListView(ListView):
+    queryset = RestaurantLocation.objects.filter(category__iexact='asian fusion')
+    template_name = 'restaurants/restaurant_list.html'
+    
+class SearchRestaurantListView(ListView):
+    template_name = 'restaurants/restaurant_list.html'
+
+    def get_queryset(self):
+        print(self.kwargs)
+        slug = self.kwargs.get("slug")
+        if slug:
+            queryset = RestaurantLocation.objects.filter(
+                Q(category__iexact=slug) |
+                Q(category__icontains=slug)
+                )
+        else:
+            queryset = RestaurantLocation.objects.none()
+        return queryset
     
 
 
