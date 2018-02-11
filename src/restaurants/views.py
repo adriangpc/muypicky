@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
+from .models import RestaurantLocation
+
 # Create your views here.
 # function based view
 # def home(request):
@@ -72,7 +74,14 @@ class HomeView(TemplateView):
 class AboutView(TemplateView):
     template_name = 'about.html'
 
-
+def restaurant_listview(request):
+    template_name = 'restaurants/restaurant_list.html'
+    queryset = RestaurantLocation.objects.all()
+    context = {
+        "object_list": queryset
+    }
+    return render(request, template_name, context)
+    
 
 
 
